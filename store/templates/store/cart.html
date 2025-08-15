@@ -47,6 +47,8 @@
 					</div>
 					<div style="flex:1"><p>${{ item.get_total }}</p></div>
 				</div>
+				{% empty %}
+				<h1>Empty</h1>
 				{% endfor %}
 
 
