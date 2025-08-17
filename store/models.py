@@ -62,12 +62,14 @@ class Order(models.Model):
         return str(self.id)
     
     @property
+    # Else Overall item ko total cost calculate garcha
     def get_cart_total(self):
         orderitems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderitems])
-        return total\
+        return total
         
     @property
+    # Specific items bhitra ko quantity return garcha
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
         total_count = sum([item.quantity for item in orderitems])
