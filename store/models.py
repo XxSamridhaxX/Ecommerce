@@ -61,6 +61,17 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
     
+# when a product is not digital only then the shipping address should be displayed.
+# if not then shipping address should not be displayed
+    @property
+    def shipping(self):
+        shipping = False
+        items = self.orderitem_set.all()
+        for i in items:
+            if i.product.digital == False:
+                shipping = True
+        return shipping
+    
     @property
     # Else Overall item ko total cost calculate garcha
     def get_cart_total(self):
@@ -87,6 +98,9 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+    
+    def __str__(self):
+        return f"{self.product .name} X{self.quantity}" 
 
 
 class ShippingAddress(models.Model):

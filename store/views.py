@@ -47,7 +47,7 @@ def checkout(request):
     else:
         cartItems = order['get_cart_items']
         items = []
-        order = {'get_cart_total':0, 'get_cart_items':0}
+        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
     context= {'items':items, 'order':order,'cartItems':cartItems}
     return render(request,'store/checkout.html',context)
 
@@ -81,7 +81,3 @@ def updateItem(request):
     
     return JsonResponse('Item was added', safe = False)
 
-
-
-
-zxcvbnmzxcvbnmxcvbnm
