@@ -31,7 +31,7 @@
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="country" placeholder="Country Zip code..">
 						</div>
 					</div>
 
@@ -43,6 +43,7 @@
 			<br>
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
+				<button class="btn btn-outline-primary rounded" id="make-payment">Payment Options</button>
 			</div>
 			
 		</div>
@@ -70,11 +71,32 @@
 
 
 	<script type='text/javascript'>
+		{% comment %} In order.shipping the shipping is a callable property of our order class where euta pani order items non digital cha bhane true pathaucha {% endcomment %}
 		var x = '{{ order.shipping }}'
 
 		if(x == "False")
 		{
 			document.getElementById('shipping-info').innerHTML = ""
+		}
+
+		var form = document.getElementById('form');
+
+		form.addEventListener('submit',function(e)
+		{
+			e.preventDefault();
+			console.log("Payment Info Done")
+			
+			document.getElementById('form-button').classList.add("hidden")
+			document.getElementById('payment-info').classList.remove("hidden")
+		})
+
+		document.getElementById('make-payment').addEventListener('click',function(e)
+		{
+			submitFormData()
+		})
+
+		function submitFormData(){
+			console.log("Form Data Successfully submitted")
 		}
 	</script>
 {% endblock content %}
