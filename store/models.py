@@ -80,7 +80,7 @@ class Order(models.Model):
         return total
         
     @property
-    # Specific items bhitra ko quantity return garcha
+    # Overall cart ma kati ota items cha bhancha
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
         total_count = sum([item.quantity for item in orderitems])
