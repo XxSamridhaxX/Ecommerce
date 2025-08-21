@@ -81,3 +81,8 @@ def updateItem(request):
     
     return JsonResponse('Item was added', safe = False)
 
+import datetime
+def processOrder(request):
+    transation_id = datetime.datetime.now().timestamp()
+
+

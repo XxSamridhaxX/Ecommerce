@@ -19,19 +19,19 @@
 						<p>Shipping Information:</p>
 						<hr>
 						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Address.." required>
+							<input class="form-control" type="text" name="address" placeholder="Address..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="city" placeholder="City.." required>
+							<input class="form-control" type="text" name="city" placeholder="City..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="state" placeholder="State.." required>
+							<input class="form-control" type="text" name="state" placeholder="State..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="zipcode" placeholder="Zip code.." required>
+							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Country Zip code.." required>
+							<input class="form-control" type="text" name="country" placeholder="Zip code..">
 						</div>
 					</div>
 
@@ -43,7 +43,7 @@
 			<br>
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
-				<button class="btn btn-outline-primary rounded" id="make-payment">Payment Options</button>
+				<button id="make-payment">Make payment</button>
 			</div>
 			
 		</div>
@@ -56,72 +56,53 @@
 				<hr>
 				{% for item in items %}
 				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{ item.product.ImageURL }}"></div>
-					<div style="flex:2"><p>{{ item.product.name }}</p></div>
-					<div style="flex:1"><p>${{ item.product.price }}</p></div>
-					<div style="flex:1"><p>x{{ item.quantity }}</p></div>
+					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+					<div style="flex:2"><p>{{item.product.name}}</p></div>
+					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+					<div style="flex:1"><p>x{{item.quantity}}</p></div>
 				</div>
 				{% endfor %}
-				<h5>Items:   {{ order.get_cart_items }}</h5>
-				<h5>Total:   ${{ order.get_cart_total }}</h5>
+				<h5>Items:   {{order.get_cart_items}}</h5>
+				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	<script type='text/javascript'>
-		
-		{% comment %} In order.shipping the shipping is a callable property of our order class where euta pani order items non digital cha bhane true pathaucha {% endcomment %}
-		var shipping = '{{ order.shipping }}'
-		var total = '{{ order.get_cart_total|floatformat:2 }}';
-		
-		if(shipping == "False")
-		{
-			document.getElementById('shipping-info').innerHTML = ""
+
+	<script type="text/javascript">
+		var shipping = '{{order.shipping}}'
+		var total = '{{order.get_cart_total|floatformat:2}}'
+
+		if (shipping == 'False'){
+		 	document.getElementById('shipping-info').innerHTML = ''
 		}
 
-		var form = document.getElementById('form');
+		if (user != 'AnonymousUser'){
+		 	document.getElementById('user-info').innerHTML = ''
+		 }
 
-		form.addEventListener('submit',function(e)
-		{
-			e.preventDefault();
-			console.log("Payment Info Done")
-			
-			document.getElementById('form-button').classList.add("hidden")
-			document.getElementById('payment-info').classList.remove("hidden")
-		})
-
-		document.getElementById('make-payment').addEventListener('click',function(e)
-		{
-			submitFormData()
-		})
-
-		function submitFormData(){
-			console.log("Form Data Successfully submitted")
+		if (shipping == 'False' && user != 'AnonymousUser'){
+			//Hide entire form if user is logged in and shipping is false
+				document.getElementById('form-wrapper').classList.add("hidden");
+				//Show payment if logged in user wants to buy an item that does not require shipping
+			    document.getElementById('payment-info').classList.remove("hidden");
 		}
 
-		if(user != "AnonymousUser"){
-			document.getElementById('user-info').innerHTML = ''
-		}
-		if(user != "AnonymousUser" && shipping == "False")
-		{
-			//Hide the whole form when user is not anonymous and show only the payment options.
-			document.getElementById('form-wrapper').classList.add('hidden')
-			document.getElementById('payment-info').classList.remove('hidden')
-		}
+		var form = document.getElementById('form')
+		form.addEventListener('submit', function(e){
+	    	e.preventDefault()
+	    	console.log('Form Submitted...')
+	    	document.getElementById('form-button').classList.add("hidden");
+	    	document.getElementById('payment-info').classList.remove("hidden");
+	    })
 
-		document.getElementById('make-payment').addEventListener('click',function(e){
-			submitFormData()
-		})
+	    document.getElementById('make-payment').addEventListener('click', function(e){
+	    	submitFormData()
+	    })
 
+	    function submitFormData(){
+	    	console.log('Payment button clicked')
 
-		function submitFormData()
-		{
-			console.log('Payment Button Clicked')
-			//Create a structure for the user form data so that it can be sent to the backend with ease
-			var userFormData = 
-			{
+	    	var userFormData = {
 				'name':null,
 				'email':null,
 				'total':total,
@@ -134,39 +115,38 @@
 				'zipcode':null,
 			}
 
-			if(shipping != "False")
-			{
-				shippingInfo.address = form.address.value
-				shippingInfo.city = form.city.value
-				shippingInfo.state = form.state.value
-				shippingInfo.zipcode = form.zipcode.value
-				
-			}
+			if (shipping != 'False'){
+	    		shippingInfo.address = form.address.value
+		    	shippingInfo.city = form.city.value
+		    	shippingInfo.state = form.state.value
+		    	shippingInfo.zipcode = form.zipcode.value
+	    	}
 
-			if( user == "AnonymousUser")
-			{
+	    	if (user == 'AnonymousUser'){
+	    		userFormData.name = form.name.value
+	    		userFormData.email = form.email.value
+	    	}
 
-				userFormData.name = form.name.value
-				userFormData.email = form.email.value
+	    	console.log('Shipping Info:', shippingInfo)
+	    	console.log('User Info:', userFormData)
 
-			}
+	    	var url = "/process_order/"
+	    	fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type':'applicaiton/json',
+	    			'X-CSRFToken':csrftoken,
+	    		}, 
+	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
+	    		
+	    	})
+	    	.then((response) => response.json())
+	    	.then((data) => {
+				  console.log('Success:', data);
+				  alert('Transaction completed');  
+				  {% comment %} window.location.href = "{% url 'store' %}" {% endcomment %}
 
-			console.log("Shipping Info:", shippingInfo)
-			console.log("User Info:", userFormData)
-
-		}
-
-
+				})
+	    }
 	</script>
 {% endblock content %}
-
-
-sdfasdfasdfsd
-\fsda
-<fieldset><fieldset>sdfasdfasdfsdsad
-	fdsa
-	<fieldset>sdfasdfasdfsdsda
-		fsd
-		f
-	</fieldset>
-</fieldset></fieldset>
