@@ -1,0 +1,4 @@
+Vdo no 3
+If front end ta backend bata aako total same ho bhane chai the order is complete
+
+total == order.get_cart_total

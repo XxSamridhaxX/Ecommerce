@@ -36,6 +36,7 @@ function updateUserOrder(productId, action){
 		.then((data) => {
 		    // console.log('data: ',data);
 			location.reload();
+			// location.reload() reloads the current page so that the effect of adding or deleting the items are quickly seen
 		});
 }
 

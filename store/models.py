@@ -59,7 +59,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length = 100, null=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(f"{self.id}. {self.customer}'s Order")
     
 # when a product is not digital only then the shipping address should be displayed.
 # if not then shipping address should not be displayed

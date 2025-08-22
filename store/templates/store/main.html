@@ -13,6 +13,7 @@
 	<script type="text/javascript">
 		var user = '{{request.user}}'
 
+		{% comment %} This is to get the CRF token {% endcomment %}
 		function getCookie(name) {
 		    var cookieValue = null;
 		    if (document.cookie && document.cookie !== '') {
