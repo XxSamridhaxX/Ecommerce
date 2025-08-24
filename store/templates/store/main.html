@@ -14,7 +14,7 @@
 		var user = '{{request.user}}'
 
 		{% comment %} This is to get the CRF token {% endcomment %}
-		function getCookie(name) {
+		function getToken(name) {
 		    var cookieValue = null;
 		    if (document.cookie && document.cookie !== '') {
 		        var cookies = document.cookie.split(';');
@@ -29,8 +29,36 @@
 		    }
 		    return cookieValue;
 		}
-		var csrftoken = getCookie('csrftoken')
-	
+		var csrftoken = getToken('csrftoken')
+
+		{% comment %} To get token {% endcomment %}
+		function getCookie(name){
+			var cookieArr = document.cookie.split(';')
+			for (var i = 0; i < cookieArr.length; i++)
+			{
+				var cookiePair = cookieArr[i].split('=');
+				 
+
+				if(name == cookiePair[0].trim())
+				{
+					//Decode cookiepair and return
+					return decodeURIComponent(cookiePair[1]);
+				}
+			}
+
+			//If cookie doesn't exist return null
+			return null;
+			}
+
+			var cart  = JSON.parse(getCookie('cart'))
+
+			if (cart == undefined){
+				cart = {}
+				console.log('Cart Created!',cart)
+				document.cookie = 'cart='+ JSON.stringify(cart)+ ';domain=;path=/'
+			}
+
+			console.log("Cart:",cart)
 	</script>
 
 </head>

@@ -2,3 +2,13 @@ Vdo no 3
 If front end ta backend bata aako total same ho bhane chai the order is complete
 
 total == order.get_cart_total
+
+
+Day 4 vdo 4
+The cart items stored by anoynimous  users should be stored
+ in cookies so that when site is closed stil the data is
+  contained in the user's browser story area.
+
+document.cookie.split(';')
+what it does is that it separates the cookie into a string like below
+["csrftoken=abc123", " sessionid=xyz456", " cart=3"] so that we can iterate over it.
