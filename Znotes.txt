@@ -12,3 +12,12 @@ The cart items stored by anoynimous  users should be stored
 document.cookie.split(';')
 what it does is that it separates the cookie into a string like below
 ["csrftoken=abc123", " sessionid=xyz456", " cart=3"] so that we can iterate over it.
+
+now I've created a functionality to add and delete cookie
+in main.html the fuction get cookie gets the cookie named cart.
+The cart variable holds the object notation of the cart cookie parsed.
+And then we check whether the cookie named cart exists or not. If not we create one as empty.
+
+Then in cart.js we had creted a updatecart function that sent post request to the server when we clicked a button with update-cart class
+when the user was anonymous we has ignored the functionlaity but now we created a addCookieItem function that adds or removes the quantity
+ of the items whoose effect can be seen over cookie in the broswer 

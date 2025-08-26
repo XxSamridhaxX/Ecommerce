@@ -33,11 +33,12 @@
 
 		{% comment %} To get token {% endcomment %}
 		function getCookie(name){
+			{% comment %} string -> array {% endcomment %}
 			var cookieArr = document.cookie.split(';')
 			for (var i = 0; i < cookieArr.length; i++)
 			{
 				var cookiePair = cookieArr[i].split('=');
-				 
+				 // ['name = xyz']-> ['name', 'xyz']
 
 				if(name == cookiePair[0].trim())
 				{
@@ -49,7 +50,8 @@
 			//If cookie doesn't exist return null
 			return null;
 			}
-
+			// parse turns json to js object
+			//This becomes gloabal variable and can be accessed from any part of the program.
 			var cart  = JSON.parse(getCookie('cart'))
 
 			if (cart == undefined){
@@ -107,16 +109,3 @@
 	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 </body>
 </html>
-
-
-qwertyuisdfghjklxcvbnmertyui
-<dfn>dfg
-	<dfn>fsd
-		fg
-		get_digitg
-		doesngf
-		gsd
-		poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZgd
-		poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZgf
-	</dfn>
-</dfn>
