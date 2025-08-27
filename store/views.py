@@ -31,9 +31,22 @@ def cart(request):
         # items = items.annotate(total = ExpressionWrapper(F('quantity')*F('product__price'),output_field=FloatField()))
         # Expression wrapper uses double underscore to traverse relationships
     else:
+        # If cookie exists
+        try:
+            cart = json.loads(request.COOKIES['cart'])
+        # if first time visits and no cookie exists
+        except:
+            cart = {}
+        print(cart)
         items = []
         order = {'get_cart_total':0, 'get_cart_items':0}
         cartItems = order['get_cart_items']
+
+        for i in cart:
+            for j in cart[i]:
+                cartItems += cart[i][j]
+        print(cartItems)
+
     context= {'items':items,'order':order,'cartItems':cartItems}
     return render(request,'store/cart.html',context)
 

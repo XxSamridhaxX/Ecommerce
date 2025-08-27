@@ -21,3 +21,10 @@ And then we check whether the cookie named cart exists or not. If not we create 
 Then in cart.js we had creted a updatecart function that sent post request to the server when we clicked a button with update-cart class
 when the user was anonymous we has ignored the functionlaity but now we created a addCookieItem function that adds or removes the quantity
  of the items whoose effect can be seen over cookie in the broswer 
+
+
+8/27/2025
+Since the anonymous user's cart will be stored in cookies then 
+we can use json.loads(request.COOKIES['cart]) to get the cart cookies out of the cookies
+
+But the problem occours when user logs in for the first time they dont have cookie named cart which will throw error(not the case here because we're creating empty cookie for every visit to the main.html but still using exception handling)
