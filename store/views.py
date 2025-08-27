@@ -129,3 +129,14 @@ def processOrder(request):
 
 
 
+sdfdsafdsafasdf
+asdf
+def save(self, *args, **kwargs):
+   Fsadf
+   def save(self, *args, **kwargs):
+      FloatFielddsaf
+      def save(self, *args, **kwargs):
+         f
+         super(ModelName, self).save(*args, **kwargs) # Call the real save() method
+      super(ModelName, self).save(*args, **kwargs) # Call the real save() method
+   super(ModelName, self).save(*args, **kwargs) # Call the real save() method
