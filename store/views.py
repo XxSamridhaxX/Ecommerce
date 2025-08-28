@@ -43,8 +43,14 @@ def cart(request):
         cartItems = order['get_cart_items']
 
         for i in cart:
+            product = Product.objects.get(id = i)
+            total = (product.price*cart[i]['quantity'])
+
+            # for over all total add total of each items
+            order['get_cart_total']+=total
             for j in cart[i]:
                 cartItems += cart[i][j]
+                order['get_cart_items']= cartItems
         print(cartItems)
 
     context= {'items':items,'order':order,'cartItems':cartItems}
@@ -126,17 +132,3 @@ def processOrder(request):
     return JsonResponse("Payment Submitted...", safe = False)
 
 
-
-
-
-sdfdsafdsafasdf
-asdf
-def save(self, *args, **kwargs):
-   Fsadf
-   def save(self, *args, **kwargs):
-      FloatFielddsaf
-      def save(self, *args, **kwargs):
-         f
-         super(ModelName, self).save(*args, **kwargs) # Call the real save() method
-      super(ModelName, self).save(*args, **kwargs) # Call the real save() method
-   super(ModelName, self).save(*args, **kwargs) # Call the real save() method
