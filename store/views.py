@@ -38,6 +38,8 @@ def cart(request):
         except:
             cart = {}
         print(cart)
+
+        # Empty items list for anonymous users
         items = []
         order = {'get_cart_total':0, 'get_cart_items':0}
         cartItems = order['get_cart_items']
@@ -51,6 +53,22 @@ def cart(request):
             for j in cart[i]:
                 cartItems += cart[i][j]
                 order['get_cart_items']= cartItems
+
+            item = {
+                        'product':
+                            {
+                                'id':product.id,
+                                'name':product.name,
+                                'ImageURL': product.ImageURL,
+                                'price':product.price,
+                            },
+                            'quantity':cart[i]['quantity'],
+                            'get_total':total,
+
+                    }
+            items.append(item)
+
+
         print(cartItems)
 
     context= {'items':items,'order':order,'cartItems':cartItems}
@@ -130,5 +148,4 @@ def processOrder(request):
         print("The user is not authenticated")
     
     return JsonResponse("Payment Submitted...", safe = False)
-
 

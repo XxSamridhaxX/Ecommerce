@@ -61,18 +61,14 @@ function addCookieItems(productId, action)
 
 	if(action == 'remove')
 	{
-		cart[productId]-=1
+		cart[productId]['quantity'] -= 1
 
-		if(cart[productId]['quantity']<=0)
-		{
-			console.log('Items Should be deleted')
-			delete cart[productId]
-		}
-
+		if (cart[productId]['quantity'] <= 0)
+			{delete cart[productId]}
 			
 	}
 
-	console.log('Crt:',cart)
+	console.log('Cart:',cart)
 	document.cookie = 'cart='+JSON.stringify(cart) + ";domain=;path=/"
 	location.reload()
 
