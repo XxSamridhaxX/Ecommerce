@@ -45,29 +45,38 @@ def cart(request):
         cartItems = order['get_cart_items']
 
         for i in cart:
-            product = Product.objects.get(id = i)
-            total = (product.price*cart[i]['quantity'])
+            # We're enclosing this inside try catch because cookie ma bhako item db bata delete pani bhaisakeko huncha so 
+            # product bhanera nikalda reference error dera no item exists bhanne error auna sakcha so try except block ma haleko eslai
+            # Problem: DoesNotExist at /cart/
+            try:
+                product = Product.objects.get(id = i)
+                total = (product.price*cart[i]['quantity'])
 
-            # for over all total add total of each items
-            order['get_cart_total']+=total
-            for j in cart[i]:
-                cartItems += cart[i][j]
-                order['get_cart_items']= cartItems
+                # for over all total add total of each items
+                order['get_cart_total']+=total
+                for j in cart[i]:
+                    cartItems += cart[i][j]
+                    order['get_cart_items']= cartItems
 
-            item = {
-                        'product':
-                            {
-                                'id':product.id,
-                                'name':product.name,
-                                'ImageURL': product.ImageURL,
-                                'price':product.price,
-                            },
-                            'quantity':cart[i]['quantity'],
-                            'get_total':total,
+                item = {
+                            'product':
+                                {
+                                    'id':product.id,
+                                    'name':product.name,
+                                    'ImageURL': product.ImageURL,
+                                    'price':product.price,
+                                },
+                                'quantity':cart[i]['quantity'],
+                                'get_total':total,
 
-                    }
-            items.append(item)
+                        }
+                items.append(item)
 
+                if product.digital == "False":
+                    order['shipping'] = True
+            except:
+                pass
+        
 
         print(cartItems)
 
