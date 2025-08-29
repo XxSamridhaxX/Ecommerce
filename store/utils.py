@@ -12,7 +12,7 @@ def cookieCart(request):
 
         # Empty items list for anonymous users
     items = []
-    order = {'get_cart_total':0, 'get_cart_items':0}
+    order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
     cartItems = order['get_cart_items']
 
     for i in cart:
@@ -25,10 +25,10 @@ def cookieCart(request):
 
             # for over all total add total of each items
             order['get_cart_total']+=total
-            for j in cart[i]:
-                cartItems += cart[i][j]
-                order['get_cart_items']= cartItems
+            cartItems += cart[i]['quantity']
+            order['get_cart_items']= cartItems
 
+            # For each item in our Cookiecart
             item = {
                         'product':
                             {
@@ -44,7 +44,8 @@ def cookieCart(request):
             items.append(item)
 
             if product.digital == "False":
-                    order['shipping'] = True
+                order['shipping'] = True
+
         except:
             pass
     
