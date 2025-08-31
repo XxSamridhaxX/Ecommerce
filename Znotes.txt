@@ -28,3 +28,18 @@ Since the anonymous user's cart will be stored in cookies then
 we can use json.loads(request.COOKIES['cart]) to get the cart cookies out of the cookies
 
 But the problem occours when user logs in for the first time they dont have cookie named cart which will throw error(not the case here because we're creating empty cookie for every visit to the main.html but still using exception handling)
+
+
+for more usuability and DRY concept what we can do is add a new function in utils.py and add the repeating code give below there
+if request.user.is_authenticated:
+        customer = request.user.customer
+        order,created = Order.objects.get_or_create(customer=customer,complete= False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:
+        cookieData = cookieCart(request)
+        items = cookieData['items']
+        order = cookieData['order']
+        cartItems = cookieData['cartItems']
+
+and return value to the places that need/ constantly using this code

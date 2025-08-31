@@ -96,11 +96,15 @@ class OrderItem(models.Model):
 
     @property
     def get_total(self):
+
+        # high
         total = self.product.price * self.quantity
+
+        
         return total
     
     def __str__(self):
-        return f"{self.product .name} X{self.quantity}" 
+        return f"{self.product.name} X{self.quantity}" if self.product else "Deleted Item"
 
 
 class ShippingAddress(models.Model):

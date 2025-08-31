@@ -52,12 +52,11 @@
 			}
 			// parse turns json to js object
 			//This becomes gloabal variable and can be accessed from any part of the program.
-			var cart  = JSON.parse(getCookie('cart'))
-
+			var cart =JSON.parse(getCookie('cart'))
 			if (cart == undefined){
 				cart = {}
 				console.log('Cart Created!',cart)
-				document.cookie = 'cart='+ JSON.stringify(cart)+ ';domain=;path=/'
+				document.cookie = 'cart='+ JSON.stringify(cart)+ ';path=/'
 			}
 
 			console.log("Cart:",cart)

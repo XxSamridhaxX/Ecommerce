@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Product, Order, OrderItem, ShippingAddress
+from .models import Product, Order, OrderItem, ShippingAddress, Customer
 from django.db.models import F,ExpressionWrapper, FloatField
 
 from django.http import JsonResponse
@@ -7,56 +7,37 @@ import json
 # Create your views here.
 
 
-from .utils import cookieCart
+from .utils import cookieCart, cartData
 
 def store(request):
 
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order,created = Order.objects.get_or_create(customer=customer,complete= False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        cookieData = cookieCart(request)
-        items = cookieData['items']
-        order = cookieData['order']
-        cartItems = cookieData['cartItems']
+    Data = cartData(request)
+    items = Data['items']
+    order = Data['order']
+    cartItems = Data['cartItems']
     products = Product.objects.all()
     context= {'products':products,'cartItems':cartItems}
     return render(request,'store/store.html',context)
 
 
 def cart(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer = customer, complete = False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-        # items = items.annotate(total = ExpressionWrapper(F('quantity')*F('product__price'),output_field=FloatField()))
-        # Expression wrapper uses double underscore to traverse relationships
-    else:
-        cookieData = cookieCart(request)
-        items = cookieData['items']
-        order = cookieData['order']
-        cartItems = cookieData['cartItems']
-        
+
+    Data = cartData(request)
+    items = Data['items']
+    order = Data['order']
+    cartItems = Data['cartItems']
 
     context= {'items':items,'order':order,'cartItems':cartItems}
     return render(request,'store/cart.html',context)
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer = customer, complete = False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        cookieData = cookieCart(request)
-        items = cookieData['items']
-        order = cookieData['order']
-        cartItems = cookieData['cartItems']
-        print(order['shipping'])
+
+    Data = cartData(request)
+    items = Data['items']
+    order = Data['order']
+    cartItems = Data['cartItems']
+
     context= {'items':items, 'order':order,'cartItems':cartItems}
     return render(request,'store/checkout.html',context)
 
@@ -80,6 +61,7 @@ def updateItem(request):
 
     if action=="add":
         orderItem.quantity+=1
+
     elif action=="remove":
         orderItem.quantity-=1
     orderItem.save()
@@ -117,7 +99,26 @@ def processOrder(request):
             )
 
     else:
-        print("The user is not authenticated")
+        anoyData = json.loads(request.body)
+        name = anoyData['form']['name']
+        email = anoyData['form']['email']
+
+        customer,created = Customer.objects.get_or_create(email = email)
+        customer.name= name 
+        customer.save()
+
+        order, created = Order.objects.get_or_create(customer = customer)
+
+        # Import data from cookies
+        Data = cartData(request)
+        items = Data['items']
+        order = Data['order']
+        cartItems = Data['cartItems']
+
+        for item in items:
+            print(item['product']['id'])
+            product = Product.objects.get(id = item['product'['id']])
+
     
-    return JsonResponse("Payment Submitted...", safe = False)
+    return JsonResponse("Payment Submitted..aasdfasdfasdfasdfasd.", safe = False)
 
