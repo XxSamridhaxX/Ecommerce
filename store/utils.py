@@ -1,6 +1,8 @@
 import json
-from .models import Product,Order
+from .models import Product,Order, Customer, OrderItem
 
+
+# This is a reusuable function which returns items dictionery for anonymous users which contains values of cookie appended to create items
 def cookieCart(request):
     # If cookie exists
     try:
@@ -52,16 +54,43 @@ def cookieCart(request):
     return {'items':items,'order':order,'cartItems':cartItems}
 
 def cartData(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order,created = Order.objects.get_or_create(customer=customer,complete= False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
     else:
+        # If user is not authenticated i.e anonymous then get the cart items and extract from cart items. Here cookie data returns dictionery 
         cookieData = cookieCart(request)
         items = cookieData['items']
         order = cookieData['order']
         cartItems = cookieData['cartItems']
 
     return {'items':items, 'order':order, 'cartItems':cartItems}
+
+
+def guestOrder(request, data):
+        name = data['form']['name']
+        email = data['form']['email']
+
+        # Import data from cookies
+        Data = cartData(request)
+        items = Data['items']
+
+        # Create customer from the data passed
+        customer,created = Customer.objects.get_or_create(email = email)
+        customer.name= name 
+        customer.save()
+
+        ''' create order for that customer we created'''
+        order, created = Order.objects.get_or_create(customer = customer, complete = False)
+
+
+
+        """ Add items to that order """
+        for item in items:
+            print(item['product']['id'])
+            product = Product.objects.get(id = item['product']['id'])
+            orderitem = OrderItem.objects.create(product = product, quantity = item['quantity'], order= order)
+
+        return customer,order

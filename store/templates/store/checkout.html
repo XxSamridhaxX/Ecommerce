@@ -130,12 +130,13 @@
 	    	console.log('Shipping Info:', shippingInfo)
 	    	console.log('User Info:', userFormData)
 
+			// process order bhanne ma if anonymous cha bhane userdata plus shipping info pathaucha else shipping matra
 	    	var url = "/process_order/"
 	    	fetch(url, {
 	    		method:'POST',
 	    		headers:{
 	    			'Content-Type':'applicaiton/json',
-	    			'X-CSRFToken':csrftoken,
+	    			'X-CSRFToken': csrftoken,
 	    		}, 
 	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
 	    		

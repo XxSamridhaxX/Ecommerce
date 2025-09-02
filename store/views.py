@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Product, Order, OrderItem, ShippingAddress, Customer
+from .models import Product, Order, OrderItem, ShippingAddress, Customer, OrderItem
 from django.db.models import F,ExpressionWrapper, FloatField
 
 from django.http import JsonResponse
@@ -7,7 +7,7 @@ import json
 # Create your views here.
 
 
-from .utils import cookieCart, cartData
+from .utils import cookieCart, cartData, guestOrder
 
 def store(request):
 
@@ -80,44 +80,31 @@ def processOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer = customer, complete = False)
-        order.transaction_id = transation_id
-        total = float(data['form']['total'])
+        print("asdfasdfasf")
 
-        if total == order.get_cart_total:
-            order.complete = True
         
-        order.save()
 
-        if order.shipping == True:
+    else:
+        """" Fetch bata bhako data request.body ma aucha ani json.loads le python dict ma convert gardincha """
+        customer,order = guestOrder(request,data)
+            
+    order.transaction_id = transation_id
+    total = float(data['form']['total'])
+    if total == order.get_cart_total:
+            order.complete = True
+    order.save()
 
+    # Gets its data from request.body which was sent by fetch in this url
+    if order.shipping == True:
             ShippingAddress.objects.create(
-                customer = customer,
+                 customer = customer,
                 order = order,
                 address = data["shipping"]['address'],
+                city = data['shipping']['city'],
                 state = data["shipping"]['state'],
                 zipcode = data["shipping"]['zipcode'],
             )
-
-    else:
-        anoyData = json.loads(request.body)
-        name = anoyData['form']['name']
-        email = anoyData['form']['email']
-
-        customer,created = Customer.objects.get_or_create(email = email)
-        customer.name= name 
-        customer.save()
-
-        order, created = Order.objects.get_or_create(customer = customer)
-
-        # Import data from cookies
-        Data = cartData(request)
-        items = Data['items']
-        order = Data['order']
-        cartItems = Data['cartItems']
-
-        for item in items:
-            print(item['product']['id'])
-            product = Product.objects.get(id = item['product'['id']])
+        
 
     
     return JsonResponse("Payment Submitted..aasdfasdfasdfasdfasd.", safe = False)
