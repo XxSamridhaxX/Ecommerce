@@ -14,7 +14,7 @@ def cookieCart(request):
 
         # Empty items list for anonymous users
     items = []
-    order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+    order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':True}
     cartItems = order['get_cart_items']
 
     for i in cart:
@@ -45,8 +45,12 @@ def cookieCart(request):
                     }
             items.append(item)
 
-            if product.digital == "False":
-                order['shipping'] = True
+
+            
+            if product.digital:
+                order["shipping"] = False
+            else:
+                order["shipping"] = True
 
         except:
             pass

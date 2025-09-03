@@ -31,7 +31,7 @@
 		}
 		var csrftoken = getToken('csrftoken')
 
-		{% comment %} To get token {% endcomment %}
+		{% comment %} To get cookie of desired name ie cart {% endcomment %}
 		function getCookie(name){
 			{% comment %} string -> array {% endcomment %}
 			var cookieArr = document.cookie.split(';')

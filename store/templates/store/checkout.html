@@ -74,6 +74,7 @@
 
 		if (shipping == 'False'){
 		 	document.getElementById('shipping-info').innerHTML = ''
+			console.log("Shipping shouldn't be done")
 		}
 
 		if (user != 'AnonymousUser'){
@@ -129,7 +130,9 @@
 
 	    	console.log('Shipping Info:', shippingInfo)
 	    	console.log('User Info:', userFormData)
-
+			console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+			console.log(JSON.stringify({'form':userFormData, 'shipping':shippingInfo}))
+			console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 			// process order bhanne ma if anonymous cha bhane userdata plus shipping info pathaucha else shipping matra
 	    	var url = "/process_order/"
 	    	fetch(url, {
@@ -147,7 +150,7 @@
 				  alert('Transaction completed');  
 
 				  cart = {}
-				  document.cookie = "cart="+ JSON.stringify(cart)+ "domain=;path=/"
+				  document.cookie = "cart="+ JSON.stringify(cart)+ ";domain=;path=/"
 				  window.location.href = "{% url 'store' %}"
 
 				})
