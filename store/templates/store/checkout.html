@@ -101,6 +101,11 @@
 	    })
 
 	    function submitFormData(){
+			if(getCookie('cart').localeCompare('{}') == 0)
+			{
+				alert("You've no items in your cart")
+				window.location.href = "/"
+			}
 	    	console.log('Payment button clicked')
 
 	    	var userFormData = {
@@ -130,9 +135,6 @@
 
 	    	console.log('Shipping Info:', shippingInfo)
 	    	console.log('User Info:', userFormData)
-			console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-			console.log(JSON.stringify({'form':userFormData, 'shipping':shippingInfo}))
-			console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 			// process order bhanne ma if anonymous cha bhane userdata plus shipping info pathaucha else shipping matra
 	    	var url = "/process_order/"
 	    	fetch(url, {

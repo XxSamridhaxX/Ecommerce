@@ -77,38 +77,35 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def processOrder(request):
     transation_id = datetime.datetime.now().timestamp()
-    try:
-        data = json.loads(request.body)
-    except:
-        print("Data is having error")
+    data = json.loads(request.body)
 
-    # if request.user.is_authenticated:
-    #     customer = request.user.customer
-    #     order, created = Order.objects.get_or_create(customer = customer, complete = False)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer = customer, complete = False)
 
 
         
 
-    # else:
-    #     """" Fetch bata bhako data request.body ma aucha ani json.loads le python dict ma convert gardincha """
-    #     customer,order = guestOrder(request,data)
+    else:
+        """" Fetch bata bhako data request.body ma aucha ani json.loads le python dict ma convert gardincha """
+        customer,order = guestOrder(request,data)
             
-    # order.transaction_id = transation_id
-    # total = float(data['form']['total'])
-    # if total == order.get_cart_total:
-    #         order.complete = True
-    # order.save()
+    order.transaction_id = transation_id
+    total = float(data['form']['total'])
+    if total == order.get_cart_total:
+            order.complete = True
+    order.save()
 
-    # # Gets its data from request.body which was sent by fetch in this url
-    # if order.shipping == True:
-    #         ShippingAddress.objects.create(
-    #              customer = customer,
-    #             order = order,
-    #             address = data["shipping"]['address'],
-    #             city = data['shipping']['city'],
-    #             state = data["shipping"]['state'],
-    #             zipcode = data["shipping"]['zipcode'],
-    #         )
+    # Gets its data from request.body which was sent by fetch in this url
+    if order.shipping == True:
+            ShippingAddress.objects.create(
+                 customer = customer,
+                order = order,
+                address = data["shipping"]['address'],
+                city = data['shipping']['city'],
+                state = data["shipping"]['state'],
+                zipcode = data["shipping"]['zipcode'],
+            )
         
 
     
