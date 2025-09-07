@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,10 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 MEDIA_URL = "/images/"
+
+
+
+# Paypal sandbox settings
+PAYPAL_TEST = True
+
+PAYPAL_RECEIVER_EMAIL = "test_business1234@business.example.com"

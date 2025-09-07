@@ -43,3 +43,7 @@ if request.user.is_authenticated:
         cartItems = cookieData['cartItems']
 
 and return value to the places that need/ constantly using this code
+
+
+how to integrate paypal to django:
+https://www.youtube.com/watch?v=86KSu7aC0Ck

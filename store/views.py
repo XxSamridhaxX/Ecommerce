@@ -1,9 +1,14 @@
 from django.shortcuts import render,redirect
 from .models import Product, Order, OrderItem, ShippingAddress, Customer, OrderItem
 from django.db.models import F,ExpressionWrapper, FloatField
-
 from django.http import JsonResponse
 import json
+
+
+from django.urls import reverse
+from paypal.standard.forms import PayPalPaymentForm
+from django.conf import settings
+import uuid # create unique id for duplicate orders
 # Create your views here.
 
 
@@ -105,7 +110,11 @@ def processOrder(request):
                 state = data["shipping"]['state'],
                 zipcode = data["shipping"]['zipcode'],
             )
-        
+    
+    # PalPal form dictionary
+    paypal_dict = {
+         
+    }
 
     
     return JsonResponse("Payment Submitted..aasdfasdfasdfasdfasd.", safe = False)
