@@ -135,6 +135,6 @@ MEDIA_URL = "/images/"
 
 
 # Paypal sandbox settings
-PAYPAL_TEST = True
+# PAYPAL_TEST = True
 
-PAYPAL_RECEIVER_EMAIL = "test_business1234@business.example.com"
+# PAYPAL_RECEIVER_EMAIL = "test_business1234@business.example.com"

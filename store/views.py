@@ -6,7 +6,7 @@ import json
 
 
 from django.urls import reverse
-from paypal.standard.forms import PayPalPaymentForm
+from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 import uuid # create unique id for duplicate orders
 # Create your views here.
@@ -46,6 +46,8 @@ def checkout(request):
     context= {'items':items, 'order':order,'cartItems':cartItems}
     return render(request,'store/checkout.html',context)
 
+
+# Order ma plus or minus or add to cart gareko cha bhane yo view chalcha
 def updateItem(request):
     # Aba frontend bata data aucha json ma teslai parse garnu parcha
 
@@ -111,10 +113,10 @@ def processOrder(request):
                 zipcode = data["shipping"]['zipcode'],
             )
     
-    # PalPal form dictionary
-    paypal_dict = {
+    # # PalPal form dictionary
+    # paypal_dict = {
          
-    }
+    # }
 
     
     return JsonResponse("Payment Submitted..aasdfasdfasdfasdfasd.", safe = False)
