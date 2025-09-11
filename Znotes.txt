@@ -47,3 +47,7 @@ and return value to the places that need/ constantly using this code
 
 how to integrate paypal to django:
 https://www.youtube.com/watch?v=86KSu7aC0Ck
+Didn't actually used this but better for future reference.
+
+For running this project in future please enable venv and then run venv/Scripts/activate
+Completed on 9/11/2025
